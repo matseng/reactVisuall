@@ -1,0 +1,8 @@
+ios/NumberTileGame.xcodeproj/project.xcworkspace/xcshareddata/NumberTileGame.xccheckout
+ios/NumberTileGame.xcodeproj/xcuserdata/austinzheng.xcuserdatad/xcdebugger/Breakpoints_v2.xcbkptlist
+node_modules/
+*.xcuserdatad
+*.xcworkspace
+ios/Pods/
+ios/build
+npm-debug.log
