@@ -16,7 +16,7 @@ class RNHighScores extends React.Component {
     return (
       <View style={styles.container}>
         <Text style={styles.highScoresTitle}>
-          2048 High Scores!
+          2048 High Scores + Testing Script v02!
         </Text>
         <Text style={styles.scores}>
           {contents}
