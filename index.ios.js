@@ -7,19 +7,9 @@ import {
   Text,
   View
 } from 'react-native';
-
 import firebaseConfig from './FirebaseConfig'
-
 import * as firebase from 'firebase';
-// Initialize Firebase
-// const firebaseConfig = {
-//     apiKey: "AIzaSyCP1-Ut_BXCDgfhH7d861Bq3N-oUubR1tU",
-//     authDomain: "visuall-2f878.firebaseapp.com",
-//     databaseURL: "https://visuall-2f878.firebaseio.com",
-//     projectId: "visuall-2f878",
-//     storageBucket: "visuall-2f878.appspot.com",
-//     messagingSenderId: "547811396909"
-//   };
+
 firebase.initializeApp(firebaseConfig);
 
 function myCredential(idToken, accessToken)
@@ -30,10 +20,24 @@ function myCredential(idToken, accessToken)
       .credential(idToken, accessToken);
 
   firebase
-      .auth()
-      .signInWithCredential(credential)
-      .then(() => console.log('Account accepted'))
-      .catch((error) => console.log('Account disabled'));
+    .auth()
+    .signInWithCredential(credential)
+    .then((user) => {
+      console.log('Account accepted');
+      loadTableRefs(user);
+    })
+    .catch((error) => console.log('Account disabled'));
+}
+
+function loadTableRefs(user) {
+  console.log(user.email);
+  console.log(user.uid);
+  var ref = firebase.database().ref("version_01/users/" + user.uid);
+  ref.once('value')
+    .then((snapshot) => {
+      console.log(snapshot.key);
+      console.log(snapshot.val());
+    })
 }
 
 class RNHighScores extends React.Component {
