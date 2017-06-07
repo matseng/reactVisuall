@@ -6,3 +6,5 @@ node_modules/
 ios/Pods/
 ios/build
 npm-debug.log
+.DS_Store
+FirebaseConfig
