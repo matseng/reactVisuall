@@ -8,3 +8,4 @@ ios/build
 npm-debug.log
 .DS_Store
 FirebaseConfig
+app/config
