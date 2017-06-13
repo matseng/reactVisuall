@@ -8,8 +8,15 @@ export const searchedRecipes = createReducer({}, {
 export const userInfo = createReducer({}, {
   [types.SET_USER_INFO](state, action) {
     let newState = {};
-    // newState['userInfo'] = {key: action.userInfo.key, ...action.userInfo.val};
     newState = {...action.userInfo};
+    return newState;
+  }
+});
+
+export const visualls = createReducer({}, {
+  [types.SET_VISUALL_METADATA](state, action) {
+    let newState = {...state};
+    newState[action.metadata.key] = action.metadata;
     return newState;
   }
 });

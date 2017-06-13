@@ -13,18 +13,23 @@ export function initFirebase(idToken, accessToken) {
   return (dispatch, getState) => {
     myCredential(idToken, accessToken)  // TODO (Jun 8, 2017): re-write with promises
       .then((user) => {
-        return loadTableRefs(user);
+        return fetchUserInfo(user);
       })
-      .then( (snapshot) => {
-        console.log('my val #2: ', snapshot.val());
-        return dispatch( setUserInfo(snapshot.key, snapshot.val()) );
+      .then( (userInfo) => {
+        return dispatch( setUserInfo(userInfo) );
       })
-      .then( () => {
-        Object.keys(getState().userInfo['visualls-personal']).forEach( key => {
-        // getState().userInfo['visualls-personal'].forEach( key => {
-          // console.log('my val #3:', key);
-          loadVisuallDetailsForKey(key);  
-        });
+      .then(() => {
+        return Promise.all(
+          Object.keys(getState().userInfo['visualls-personal']).map( key => {
+            return fetchVisuallMetadata(key)
+              .then((metadata) => {
+                return dispatch( setVisuallMetadata({key: key, ...metadata}));
+              })
+          })
+        );
+      })
+      .then((visuallMetadata)=> {
+        console.log('all visuall metadata loaded');
       })
       .catch((error) => {
         console.log('Account disabled x 2');
@@ -39,11 +44,18 @@ export function addRecipe() {
   }
 }
 
-export function setUserInfo(key, val) {
-  console.log('my val #3: ', key, val);
+export function setUserInfo(userInfo) {
   return {
     type: types.SET_USER_INFO,
-    userInfo: {key:key, ...val}
+    userInfo: userInfo
+  }
+}
+
+export function setVisuallMetadata(metadata) {
+  console.log('test setVisuallMetadata', metadata);
+  return {
+    type: types.SET_VISUALL_METADATA,
+    metadata: {...metadata}
   }
 }
 
@@ -67,23 +79,22 @@ function myCredential(idToken, accessToken) {
     });
 }
 
-function loadTableRefs(user) {
+function fetchUserInfo(user) {
   var ref = firebase.database().ref("version_01/users/" + user.uid);
   return ref.once('value')
     .then((snapshot) => {
       console.log(snapshot.val());
-      return Promise.resolve(snapshot);
+      return Promise.resolve({key: snapshot.key, ...snapshot.val()});
     })
     .catch((error) => {
       return Promise.error(error);
     });
 }
 
-function loadVisuallDetailsForKey(key) {
+function fetchVisuallMetadata(key) {
   var ref = firebase.database().ref("version_01/visualls/" + key + '/metadata');
   return ref.once('value')
     .then((snapshot) => {
-      console.log('visuall metadata:', snapshot.val());
       return Promise.resolve(snapshot.val());
     })
     .catch((error) => {
