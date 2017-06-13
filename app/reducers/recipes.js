@@ -13,6 +13,7 @@ export const userInfo = createReducer({}, {
   }
 });
 
+// Add news key of 'visualls' to state tree
 export const visualls = createReducer({}, {
   [types.SET_VISUALL_METADATA](state, action) {
     let newState = {...state};

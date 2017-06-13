@@ -22,27 +22,37 @@ class Home extends Component {
     this.props.initFirebase(this.props['idToken'], this.props['accessToken']);
   }
 
-  searchPressed() {
-    this.props.fetchRecipes('bacon, cucumber, banana');
+  // Convert hashmap of visualls to array of visualls
+  visualls() {
+    return Object.keys(this.props.visualls).map(key => this.props.visualls[key]);
   }
 
   render() {
-    console.log('Home.js props: ', this.props);
+    console.log('Home.js props updated ');
     return <View style={{marginTop: 20}}> 
     <View> 
       <TouchableHighlight onPress = { () => this.searchPressed() }>
         <Text>Fetch Recipes </Text>
       </TouchableHighlight>
     </View>
-    <ScrollView></ScrollView>
+    <ScrollView>
+      {this.visualls().map(visuall => {
+        return <View key={visuall.key}>
+          <Text>{visuall.title}</Text>
+        </View>
+      })}
+    </ScrollView>
     </View>
   }
 }
 
+// Defines what state values map to props
+// render method will be called upon change in props
 function mapStateToProps(state) {
   return {
     searchedRecipes: state.searchedRecipes,
-    userInfo: state.userInfo
+    userInfo: state.userInfo,
+    visualls: state.visualls
   }
 }
 
