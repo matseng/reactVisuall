@@ -17,7 +17,14 @@ export function initFirebase(idToken, accessToken) {
       })
       .then( (snapshot) => {
         console.log('my val #2: ', snapshot.val());
-        dispatch( setUserInfo(snapshot.key, snapshot.val()) );
+        return dispatch( setUserInfo(snapshot.key, snapshot.val()) );
+      })
+      .then( () => {
+        Object.keys(getState().userInfo['visualls-personal']).forEach( key => {
+        // getState().userInfo['visualls-personal'].forEach( key => {
+          // console.log('my val #3:', key);
+          loadVisuallDetailsForKey(key);  
+        });
       })
       .catch((error) => {
         console.log('Account disabled x 2');
@@ -61,12 +68,23 @@ function myCredential(idToken, accessToken) {
 }
 
 function loadTableRefs(user) {
-  console.log(user.email);
-  console.log(user.uid);
   var ref = firebase.database().ref("version_01/users/" + user.uid);
   return ref.once('value')
     .then((snapshot) => {
+      console.log(snapshot.val());
       return Promise.resolve(snapshot);
+    })
+    .catch((error) => {
+      return Promise.error(error);
+    });
+}
+
+function loadVisuallDetailsForKey(key) {
+  var ref = firebase.database().ref("version_01/visualls/" + key + '/metadata');
+  return ref.once('value')
+    .then((snapshot) => {
+      console.log('visuall metadata:', snapshot.val());
+      return Promise.resolve(snapshot.val());
     })
     .catch((error) => {
       return Promise.error(error);
