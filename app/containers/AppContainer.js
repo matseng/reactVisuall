@@ -5,10 +5,15 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableHighlight
 } from 'react-native';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux'
+import { ActionCreators } from '../actions';
 import * as firebase from 'firebase';
 import firebaseConfig from '../config/FirebaseConfig';
+import Home from './Home';
 
 firebase.initializeApp(firebaseConfig);
 
@@ -43,7 +48,26 @@ function loadTableRefs(user) {
 
 class AppContainer extends React.Component {
   render() {
+    return <Home {...this.props} />
+  }
+}
+
+class __AppContainer extends React.Component {
+  constructor(props) {
+    super(props);
     myCredential(this.props['idToken'], this.props['accessToken']);
+    // this.state = { recipeCount: 0 };
+  }
+
+  incrementRecipeCount() {
+    this.setState({recipeCount: this.state.recipeCount+1});
+  }
+
+  addRecipe() {
+    this.props.addRecipe();
+  }
+
+  render() {
     var contents = this.props["scores"].map(
       score => <Text key={score.name}>{score.name}:{score.value}{"\n"}</Text>
     );
@@ -55,6 +79,14 @@ class AppContainer extends React.Component {
         <Text style={styles.scores}>
           {contents}
         </Text>
+        <Text style={{marginTop: 20}}>
+          {/* I am AppContainer! Recipe Count: {this.state.recipeCount} */}
+          I am AppContainer! Recipe Count: {this.props.recipeCount}
+        </Text>
+        {/* <TouchableHighlight onPress={() => {this.incrementRecipeCount() }}> */}
+        <TouchableHighlight onPress={() => {this.addRecipe() }}>
+            <Text>Add recipe </Text>
+          </TouchableHighlight>
       </View>
     );
   }
@@ -79,7 +111,16 @@ const styles = StyleSheet.create({
   },
 });
 
-// Module name
-// AppRegistry.registerComponent('RNHighScores', () => RNHighScores);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(ActionCreators, dispatch);
+}
 
-export default AppContainer;
+// This function attaches the state and actions to AppContainer, 
+// which are accessible as props.
+// export default connect((state) => {
+//   return {
+//     recipeCount: state.recipeCount
+//   }
+// }, mapDispatchToProps)(AppContainer);
+
+export default connect((state) => { return {} }, mapDispatchToProps)(AppContainer);

@@ -1,3 +1,5 @@
 export const SET_SEARCHED_RECIPES = 'SET_SEARCHED_RECIPES';
 
 export const ADD_RECIPE = 'ADD_RECIPE';
+
+export const SET_USER_INFO = 'SET_USER_INFO';
