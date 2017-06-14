@@ -11,6 +11,7 @@ const {
   TextInput,
   Image,
   TouchableHighlight,
+  ListView,
   StyleSheet
 } = ReactNative;
 import { connect } from 'react-redux'
@@ -42,7 +43,30 @@ class Home extends Component {
         </View>
       })}
     </ScrollView>
+    <MyList
+      dataSource={this.visualls()}
+    />
     </View>
+  }
+}
+
+class MyList extends Component {
+
+  constructor() {
+    super();
+    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+    this.state = {
+      ds: ds, 
+    };
+  }
+
+  render() {
+    return (
+      <ListView
+        dataSource={this.state.ds.cloneWithRows(this.props.dataSource)}
+        renderRow={(rowData) => <Text>{rowData.title}</Text>}
+      />
+    );
   }
 }
 
