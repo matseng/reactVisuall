@@ -6,18 +6,17 @@ class Row extends Component {
     const { complete } = this.props;  // I think same as: const complete  = this.props.complete;
     console.log("row.js: " + this.props.myKey);
     return (
-      <View style={styles.container}>
-        <Switch
-          value={complete}
-          onValueChange={this.props.onComplete}
-        />
-        <View style={styles.textWrap}>
-          <Text style={[styles.text, complete && styles.complete]}>{this.props.text}</Text>
+      <TouchableOpacity onPress={this.props.onRowPress}>
+        <View style={styles.container}>
+
+          <View style={styles.textWrap}>
+            <Text style={[styles.text, complete && styles.complete]}>
+              {this.props.text}
+            </Text>
+          </View>
+          
         </View>
-        <TouchableOpacity onPress={this.props.onRemove}>
-          <Text style={styles.destroy}>X</Text>
-        </TouchableOpacity>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

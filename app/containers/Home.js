@@ -30,6 +30,11 @@ class Home extends Component {
     return Object.keys(this.props.visualls).map(key => this.props.visualls[key]);
   }
 
+  handleOnRowPress(key)
+  {
+    console.log('handleOnRowPress');
+  }
+
   render() {
     console.log('Home.js props updated ');
     return <View style={styles.container}> 
@@ -41,6 +46,7 @@ class Home extends Component {
       <View style={styles.content}>
         <MyList
           dataSource={this.visualls()}
+          onRowPress={this.handleOnRowPress}
         />
       </View>
     </View>
