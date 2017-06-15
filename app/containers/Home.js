@@ -12,9 +12,11 @@ const {
   Image,
   TouchableHighlight,
   ListView,
-  StyleSheet
+  StyleSheet,
+  Platform
 } = ReactNative;
 import { connect } from 'react-redux'
+import MyList from "../components/VisuallsListView";
 
 class Home extends Component {
   constructor(props)
@@ -30,43 +32,18 @@ class Home extends Component {
 
   render() {
     console.log('Home.js props updated ');
-    return <View style={{marginTop: 20}}> 
-    <View> 
-      <TouchableHighlight onPress = { () => this.searchPressed() }>
-        <Text>Fetch Recipes </Text>
-      </TouchableHighlight>
+    return <View style={styles.container}> 
+      <View> 
+        <TouchableHighlight onPress = { () => this.searchPressed() }>
+          <Text>Fetch Recipes </Text>
+        </TouchableHighlight>
+      </View>
+      <View style={styles.content}>
+        <MyList
+          dataSource={this.visualls()}
+        />
+      </View>
     </View>
-    <ScrollView>
-      {this.visualls().map(visuall => {
-        return <View key={visuall.key}>
-          <Text>{visuall.title}</Text>
-        </View>
-      })}
-    </ScrollView>
-    <MyList
-      dataSource={this.visualls()}
-    />
-    </View>
-  }
-}
-
-class MyList extends Component {
-
-  constructor() {
-    super();
-    const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-    this.state = {
-      ds: ds, 
-    };
-  }
-
-  render() {
-    return (
-      <ListView
-        dataSource={this.state.ds.cloneWithRows(this.props.dataSource)}
-        renderRow={(rowData) => <Text>{rowData.title}</Text>}
-      />
-    );
   }
 }
 
@@ -81,3 +58,23 @@ function mapStateToProps(state) {
 }
 
 export default connect(mapStateToProps)(Home);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+    ...Platform.select({
+      ios: { paddingTop: 30 }
+    })
+  },
+  content: {
+    flex: 1
+  },
+  list: {
+    backgroundColor: '#FFF'
+  },
+  separator: {
+    borderWidth: 1,
+    borderColor: "#F5F5F5"
+  }
+})
