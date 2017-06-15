@@ -23,6 +23,7 @@ class Home extends Component {
   {
     super(props);
     this.props.initFirebase(this.props['idToken'], this.props['accessToken']);
+    this.handleOnRowPress = this.handleOnRowPress.bind(this);
   }
 
   // Convert hashmap of visualls to array of visualls
@@ -32,7 +33,7 @@ class Home extends Component {
 
   handleOnRowPress(key)
   {
-    console.log('handleOnRowPress');
+    this.props.loadVisuall(key);
   }
 
   render() {

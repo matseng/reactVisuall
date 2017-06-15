@@ -117,10 +117,4 @@ function mapDispatchToProps(dispatch) {
 
 // This function attaches the state and actions to AppContainer, 
 // which are accessible as props.
-// export default connect((state) => {
-//   return {
-//     recipeCount: state.recipeCount
-//   }
-// }, mapDispatchToProps)(AppContainer);
-
 export default connect((state) => { return {} }, mapDispatchToProps)(AppContainer);

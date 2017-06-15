@@ -5,6 +5,13 @@ export const searchedRecipes = createReducer({}, {
 
 });
 
+export const navigation = createReducer({}, {
+  [types.LOAD_VISUALL](state, action) {
+    console.log('in recipes.js, LOAD_VISUALL key:', action.key);
+    return state;
+  }
+});
+
 export const userInfo = createReducer({}, {
   [types.SET_USER_INFO](state, action) {
     let newState = {};

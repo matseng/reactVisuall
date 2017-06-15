@@ -38,6 +38,13 @@ export function initFirebase(idToken, accessToken) {
   }
 }
 
+export function loadVisuall(key) {
+  return {
+    type: types.LOAD_VISUALL,
+    key: key
+  }
+}
+
 export function addRecipe() {
   return {
     type: types.ADD_RECIPE,

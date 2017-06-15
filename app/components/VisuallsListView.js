@@ -17,11 +17,17 @@ class MyList extends Component {
   render() {
     return (
       <ListView
-      	{...this.props}
-      	style = {styles.list}
-      	enableEmptySections
+        {...this.props}
+        style = {styles.list}
+        enableEmptySections
         dataSource={this.state.ds.cloneWithRows(this.props.dataSource)}
-        renderRow={ (rowData) => <Row onRowPress={this.props.onRowPress} key={rowData.key} text={rowData.title} /> }
+        renderRow={(rowData) => 
+          <Row 
+            onRowPress={() => {this.props.onRowPress(rowData.key)}} 
+            key={rowData.key} 
+            text={rowData.title} 
+           /> 
+         }
         renderSeparator={(sectionId, rowId) => {
           return <View key={rowId} style={styles.separator} />
         }}
