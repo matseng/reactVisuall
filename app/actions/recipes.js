@@ -2,7 +2,6 @@ import * as types from './types'
 import * as firebase from 'firebase';
 import firebaseConfig from '../config/FirebaseConfig';
 
-
 export function fetchRecipes(ingredients) {
   return (dispatch, getState) => {
     console.log(getState);
@@ -10,6 +9,7 @@ export function fetchRecipes(ingredients) {
 }
 
 export function initFirebase(idToken, accessToken) {
+  firebase.initializeApp(firebaseConfig);
   return (dispatch, getState) => {
     myCredential(idToken, accessToken)  // TODO (Jun 8, 2017): re-write with promises
       .then((user) => {
